@@ -1,0 +1,174 @@
+<div class="calendar-container" [ngStyle]="{'background-color': config?.backgroundColor || '#fff'}">
+  
+    <div class="row mt-4">
+      <div class="col-12 d-flex justify-content-between align-items-center">
+  
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  
+        <div class="calendar-header">
+        <div class="btn-group d-flex justify-content-beetween align-items-center h-50">
+          <button class="btn btn-primary small-btn" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            &larr;
+          </button>
+          <div class="px-4">
+            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+          </div>
+          <button class="btn btn-primary small-btn" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="closeOpenMonthViewDay()">
+            &rarr;
+          </button>
+        </div>
+        &nbsp;&nbsp;
+        <div class="dropdown ml-6 " ngbDropdown>
+          <button class="btn btn-primary small-btn" ngbDropdownToggle>
+            {{currentViewLabel}}
+          </button>
+          <div ngbDropdownMenu aria-labelledby="viewDropdown">
+            <button ngbDropdownItem (click)="setView(CalendarView.Month, 'Month')">Month</button>
+            <button ngbDropdownItem (click)="setView(CalendarView.Week, 'Week')">Week</button>
+            <button ngbDropdownItem (click)="setView(CalendarView.Day, 'Day')">Day</button>
+          </div>
+        </div>   
+        &nbsp;&nbsp;
+        <button (click)="openEventModal()" class="btn btn-outline-secondary small-btn" style="font-size: 20px; margin-top: -5px; margin-right: 10px;">
+          &#x22EE;
+        </button>
+      </div>
+    </div>
+  </div> 
+  
+    <br />
+  
+    <!-- Your calendar views go here -->
+    <!-- Header for Month View -->
+    <ng-template #monthHeaderTemplate let-day="day" let-locale="locale">
+      <div class="cal-cell-top">
+        <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+        <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+      </div>
+    </ng-template>
+  
+    <!-- Calendar View Switcher -->
+    <div [ngSwitch]="view">
+      <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (dayClicked)="dayClicked($event.day)" [cellTemplate]="customCellTemplate" [ngClass]="config?.monthViewClass"></mwl-calendar-month-view>
+      <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh" [ngClass]="config?.weekViewClass"></mwl-calendar-week-view>
+      <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh" [ngClass]="config?.dayViewClass"></mwl-calendar-day-view>
+    </div>
+  
+    <ng-template #customCellTemplate let-day="day" let-locale="locale">
+      <div class="cal-cell-top">
+        <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+      </div>
+      <div *ngFor="let event of day.events; let i = index">
+        <div *ngIf="i < 4">
+          <p style="font-size: 6px; margin: 0px;" [ngStyle]="{
+            'list-style-type': 'disc', 
+            'color': event?.color
+          }">
+            {{ event?.name }}
+          </p>
+        </div>
+      </div>
+  
+      <div *ngIf="day.events?.length > 2" style="cursor: pointer; color: #273645;">
+        ...
+      </div>  
+    </ng-template>
+    
+  
+    <!-- Event Modal Template -->
+    <ng-template #eventModal let-modal>
+      <div class="calendar-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Event Details</h5>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <!-- Tabs for Event Types -->
+        <div class="modal-body">
+          <div class="modal-calendar">
+            <ul class="modal-calendar nav nav-tabs" id="eventTypeTabs" role="tablist">
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'AllEvents'" (click)="setEventType('AllEvents')" role="tab">
+                  All Events
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Events'" (click)="setEventType('Events')" role="tab">
+                  Events
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Appointment'" (click)="setEventType('Appointment')" role="tab">
+                  Appointments
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'DaySpecial'" (click)="setEventType('DaySpecial')" role="tab">
+                 DaySpecial
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Webinar'" (click)="setEventType('Webinar')" role="tab">
+                 Webinar
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'MasterClass'" (click)="setEventType('MasterClass')" role="tab">
+                 MasterClass
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Meeting'" (click)="setEventType('Meeting')" role="tab">
+                 Meeting
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Birthday'" (click)="setEventType('Birthday')" role="tab">
+                 Birthday
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Anniversary'" (click)="setEventType('Anniversary')" role="tab">
+                  Anniversary
+                </a>
+              </li>
+              <li class="modal-calendar nav-item" role="presentation">
+                <a class="modal-calendar nav-link" [class.active]="selectedEventType === 'Holiday'" (click)="setEventType('Holiday')" role="tab">
+                 Holiday
+                </a>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Event List -->
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="events" role="tabpanel">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Event Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <!-- <th>Remove</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let event of selectedDateEvents">
+                    <td><input type="text" class="form-control" [(ngModel)]="event.name" /></td>
+                    <td>{{ event.start | date: 'short' }}</td>
+                    <td>{{ event.end | date: 'short' }}</td>
+                    <td>
+                      <!-- <button class="btn btn-danger" (click)="deleteEvent(event)">Delete Event</button> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  

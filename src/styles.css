@@ -1,0 +1,60 @@
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+.flatpickr-calendar {
+    display: none;
+  }
+  
+  .row {
+    display: inline;
+  }
+  
+  .cal-days {
+    font-weight: bold;
+  }
+
+  .calendar-modal .event-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #333;  /* Dark color for better visibility */
+    }
+  
+  .cal-day-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+    min-height: 80px;
+    display: inline-flexbox;
+    flex-wrap: nowrap;
+  }
+  
+  .calendar-modal .event-name {
+    padding: 2px;
+    border-radius: 3px;
+    margin-top: 2px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .custom-day-cell {
+  padding: 5px;
+  }
+  
+  .calendar-modal .modal-body table td {
+  vertical-align: middle;
+  }
+
+  .calendar-modal .modal-header {
+    background-color: #975353;
+    }
+  
+  .calendar-modal .modal-body .table {
+    color: #333;  /* Ensures the modal table text is dark */
+    }
+  
+    .calendar-modal .modal-footer {
+    background-color: #d41818;
+    }
+  
+

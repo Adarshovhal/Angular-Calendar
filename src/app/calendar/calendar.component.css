@@ -1,0 +1,73 @@
+.calendar-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 10px;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.5em;
+    color: #666;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding-left: 30px;
+     
+  }
+  
+  .calendar-header h3 {
+    margin: 0;
+  }
+  
+  .btn-group {
+    display: flex;
+    gap: 1px; /* Space between buttons */
+  }
+  
+  .small-btn {
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 5px 8px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 576px) {
+    .btn-group {
+      justify-content: flex-end; /* Ensure buttons remain on the right */
+      flex-direction: row;
+    }
+  
+    h3 {
+      font-size: 18px;
+    }
+  }
+  
+  @media (min-width: 576px) and (max-width: 768px) {
+    .btn-group {
+      justify-content: flex-end;
+    }
+  
+    h3 {
+      font-size: 22px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .btn-group {
+      justify-content: flex-end;
+    }
+  
+    h3 {
+      font-size: 24px;
+    }
+  }
+  
